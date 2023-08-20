@@ -14,7 +14,7 @@ export class UsersService {
     private stripeService: StripeService,
   ) {}
 
-  async create(user: CreateUserDto) {
+  public async create(user: CreateUserDto) {
     const stripeCustomer = await this.stripeService.createCustomer(
       user.name,
       user.email,
@@ -28,11 +28,11 @@ export class UsersService {
     return newUser;
   }
 
-  async findAll() {
+  public async findAll() {
     return await this.usersRepository.find();
   }
 
-  async findById(id: number) {
+  public async findById(id: number) {
     const user = await this.usersRepository.findOne({ where: { id } });
     if (user) {
       return user;
@@ -40,7 +40,7 @@ export class UsersService {
     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
   }
 
-  async update(id: number, userName: UpdateUserDto) {
+  public async update(id: number, userName: UpdateUserDto) {
     await this.usersRepository.update(id, userName);
     const updatedUser = await this.usersRepository.findOne({ where: { id } });
     if (updatedUser) {
@@ -49,7 +49,7 @@ export class UsersService {
     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
   }
 
-  async remove(id: number) {
+  public async remove(id: number) {
     const deleteResponse = await this.usersRepository.delete(id);
     if (!deleteResponse.affected) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
