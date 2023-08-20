@@ -11,8 +11,8 @@ class User {
   @Column()
   public name: string;
 
-  // @Column()
-  // public stripeCustomerId: string;
+  @Column()
+  public stripeCustomerId: string;
 }
 
 export default User;

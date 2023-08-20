@@ -4,16 +4,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import User from 'src/models/user.entity';
+import StripeService from 'src/stripe/stripe.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private stripeService: StripeService,
   ) {}
 
   async create(user: CreateUserDto) {
-    const newUser = await this.usersRepository.create(user);
+    const stripeCustomer = await this.stripeService.createCustomer(
+      user.name,
+      user.email,
+    );
+
+    const newUser = await this.usersRepository.create({
+      ...user,
+      stripeCustomerId: stripeCustomer.id,
+    });
     await this.usersRepository.save(newUser);
     return newUser;
   }

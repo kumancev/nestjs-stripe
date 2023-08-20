@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { StripeModule } from './stripe/stripe.module';
+import { StripeModule } from './stripe/stripe.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
@@ -9,7 +9,6 @@ import * as Joi from '@hapi/joi';
 
 @Module({
   imports: [
-    // StripeModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
@@ -23,6 +22,7 @@ import * as Joi from '@hapi/joi';
     }),
     DatabaseModule,
     UsersModule,
+    StripeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
