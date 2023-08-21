@@ -6,7 +6,9 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { ChargeModule } from './charge/charge.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import * as Joi from '@hapi/joi';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -20,6 +22,9 @@ import * as Joi from '@hapi/joi';
         POSTGRES_DB: Joi.string().required(),
         PORT: Joi.number(),
       }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
     }),
     DatabaseModule,
     UsersModule,
